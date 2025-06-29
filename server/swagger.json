@@ -1,0 +1,119 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Joke API",
+    "version": "1.0.0",
+    "description": "API pour gérer les blagues"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3310/api",
+      "description": "Serveur local"
+    }
+  ],
+  "paths": {
+    "/jokes": {
+      "get": {
+        "summary": "Récupère toutes les blagues",
+        "responses": {
+          "200": {
+            "description": "Liste des blagues",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Joke" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Ajoute une nouvelle blague",
+        "requestBody": {
+          "description": "Blague à ajouter",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NewJoke" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blague ajoutée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "insertId": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jokes/{id}": {
+      "get": {
+        "summary": "Récupère une blague par son ID ou une blague aléatoire si mode=random",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID de la blague (nécessaire sauf si mode=random)",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "description": "Si 'random', renvoie une blague aléatoire",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["random"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blague trouvée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Joke" }
+              }
+            }
+          },
+          "404": {
+            "description": "Blague non trouvée"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Joke": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "question": { "type": "string" },
+          "answer": { "type": "string" }
+        },
+        "required": ["id", "question", "answer"]
+      },
+      "NewJoke": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" }
+        },
+        "required": ["question", "answer"]
+      }
+    }
+  }
+}

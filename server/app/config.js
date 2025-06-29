@@ -1,6 +1,9 @@
 // Load the express module to create a web application
 
 const express = require("express");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
 
 const app = express();
 
@@ -24,8 +27,6 @@ const app = express();
 // 3. Uncomment the section `app.use(cors({ origin: [...] }))`
 // 4. Be sure to only have URLs in the array with domains from which you want to allow requests.
 // For example: ["http://mysite.com", "http://another-domain.com"]
-
-const cors = require("cors");
 
 app.use(
   cors({
@@ -90,6 +91,10 @@ app.use("/api", apiRouter);
 
 /* ************************************************************************* */
 
+// AJOUT SWAGGER : Route pour la doc API
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+/* ************************************************************************* */
 // Production-ready setup: What is it for, and when should I enable it?
 
 // The code includes commented sections to set up a production environment where the client and server are executed from the same processus.
