@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3310/api",
       "description": "Serveur local"
+    },
+    {
+      "url": "https://carambar-api-iwih.onrender.com/api",
+      "description": "Serveur déployé"
     }
   ],
   "paths": {
